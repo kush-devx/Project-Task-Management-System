@@ -37,6 +37,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.options("*", cors());
 app.use(cookieParser());
 
 /* ================= ROUTES ================= */
