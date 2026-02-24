@@ -28,19 +28,11 @@ mongoose
 
 /* ================= MIDDLEWARE ================= */
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://ai-powered-project-management-system.onrender.com"
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: [
+    "http://localhost:3000",
+    "https://ai-powered-project-management-system.onrender.com"
+  ],
   credentials: true
 }));
 
@@ -66,8 +58,12 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://ai-powered-project-management-system.onrender.com"
+    ],
     methods: ["GET", "POST"],
+    credentials: true
   },
 });
 
