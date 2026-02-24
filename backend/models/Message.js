@@ -5,22 +5,17 @@ const messageSchema = new mongoose.Schema(
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
-      required: true
+      required: true,
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
-    text: {
+    content: {
       type: String,
       required: true,
-      trim: true
     },
-    isAIMessage: {
-      type: Boolean,
-      default: false
-    }
   },
   { timestamps: true }
 );
