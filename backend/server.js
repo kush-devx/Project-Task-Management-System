@@ -30,7 +30,7 @@ mongoose
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://project-task-management-system-vcl8.onrender.com"
+  "https://ai-powered-project-kush-management-system.onrender.com"
 ];
 
 app.use(cors({
