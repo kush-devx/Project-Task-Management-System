@@ -42,16 +42,21 @@ export default function ProjectDetailPage() {
   }, []);
 
   const generateTasksWithAI = async () => {
-    try {
-      const res = await api.post("/ai/generate-tasks", {
-        description: project.description,
-      });
+  try {
+    await api.post("/ai/generate-tasks", {
+      description: project?.description,
+      projectId: id,
+    });
 
-      alert(res.data.tasks);
-    } catch {
-      alert("AI task generation failed");
-    }
-  };
+    await fetchTasks();
+
+    alert("AI tasks generated successfully!");
+
+  } catch (error) {
+    console.error(error);
+    alert("AI task generation failed");
+  }
+};
 
   const total = tasks.length;
   const completed = tasks.filter(t => t.status === "completed").length;

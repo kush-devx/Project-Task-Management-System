@@ -1,4 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Task = require("../models/Task");
 
 // Initialize the API with your key 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -28,22 +29,68 @@ exports.improveText = async (req, res) => {
         res.status(500).json({ message: "AI failed", details: error.message });
     }
 };
-  exports.generateTasks = async (req, res) => {
-  try {
-    const { title, description } = req.body;
+  
 
-    // 🔥 Your AI logic here
-    // Example temporary response:
+exports.generateTasks = async (req, res) => {
+  try {
+    const { description, projectId } = req.body;
+
+    if (!description || !projectId) {
+      return res.status(400).json({ message: "Description and projectId required" });
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+    });
+
+    const prompt = `
+Generate 5 development tasks for this project.
+Return result in this EXACT JSON format:
+
+[
+  {
+    "title": "Task title",
+    "description": "Short description"
+  }
+]
+
+Project description:
+${description}
+`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    console.log("AI RAW RESPONSE:", text);
+
+    // Extract JSON safely
+    const jsonStart = text.indexOf("[");
+    const jsonEnd = text.lastIndexOf("]") + 1;
+    const jsonString = text.substring(jsonStart, jsonEnd);
+
+    const tasksFromAI = JSON.parse(jsonString);
+
+    const createdTasks = [];
+
+    for (let task of tasksFromAI) {
+      const newTask = await Task.create({
+        project: projectId,
+        title: task.title,
+        description: task.description,
+        status: "todo"
+      });
+
+      createdTasks.push(newTask);
+    }
+
     res.json({
-      tasks: [
-        { title: "Setup project structure" },
-        { title: "Design login UI" },
-        { title: "Connect backend API" }
-      ]
+      message: "AI tasks generated successfully",
+      tasks: createdTasks
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("AI Generate Error:", error);
     res.status(500).json({ message: "AI task generation failed" });
   }
 };
