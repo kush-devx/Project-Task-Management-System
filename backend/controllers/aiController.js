@@ -28,3 +28,22 @@ exports.improveText = async (req, res) => {
         res.status(500).json({ message: "AI failed", details: error.message });
     }
 };
+  exports.generateTasks = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    // 🔥 Your AI logic here
+    // Example temporary response:
+    res.json({
+      tasks: [
+        { title: "Setup project structure" },
+        { title: "Design login UI" },
+        { title: "Connect backend API" }
+      ]
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "AI task generation failed" });
+  }
+};

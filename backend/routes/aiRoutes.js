@@ -3,5 +3,6 @@ const router = express.Router();
 const aiController = require("../controllers/aiController");
 
 router.post("/improve", aiController.improveText);
+router.post("/generate-tasks", aiController.generateTasks);
 
 module.exports = router;
