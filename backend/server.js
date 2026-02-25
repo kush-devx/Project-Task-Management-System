@@ -27,19 +27,9 @@ mongoose
   });
 
 /* ================= MIDDLEWARE ================= */
-const cors = require("cors");
 
 app.use(cors({
-  origin: function (origin, callback) {
-    callback(null, origin);   // allow current origin
-  },
-  credentials: true
-}));
-
-app.options("*", cors({
-  origin: function (origin, callback) {
-    callback(null, origin);
-  },
+  origin: true,
   credentials: true
 }));
 
