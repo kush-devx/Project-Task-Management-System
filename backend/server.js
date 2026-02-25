@@ -27,17 +27,28 @@ mongoose
   });
 
 /* ================= MIDDLEWARE ================= */
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://ai-powered-project-management-system.onrender.com",
+  "https://project-task-management-system-vcl8.onrender.com"
+];
 
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://ai-powered-project-management-system.onrender.com"
-  ],
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 
 app.use(express.json());
-app.options("*", cors());
 app.use(cookieParser());
 
 /* ================= ROUTES ================= */
