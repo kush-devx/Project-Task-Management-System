@@ -99,9 +99,6 @@ export default function RegisterPage() {
           </span>
         </p>
       </div>
-      <div className="text-center text-sm text-gray-400 mt-16">
-        © 2026 AI Powered Project Management System
-      </div>
     </div>
   );
 }
