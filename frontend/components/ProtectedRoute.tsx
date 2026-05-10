@@ -1,18 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 
-export default function ProtectedRoute({ children }: any) {
-  const { userToken } = useAuth();
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { authReady, userToken } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!userToken) {
+    if (authReady && !userToken) {
       router.push("/login");
     }
-  }, [userToken]);
+  }, [authReady, router, userToken]);
 
-  return children;
+  if (!authReady || !userToken) return null;
+
+  return <>{children}</>;
 }

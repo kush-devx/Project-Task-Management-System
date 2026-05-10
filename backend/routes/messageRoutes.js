@@ -4,5 +4,6 @@ const verifyJWT = require("../middleware/verifyJWT.js");
 const messageController = require("../controllers/messageController.js");
 
 router.get("/:projectId", verifyJWT, messageController.getMessages);
+router.post("/", verifyJWT, messageController.createMessage);
 
 module.exports = router;

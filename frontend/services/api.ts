@@ -1,7 +1,13 @@
 import axios from "axios";
 
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
+
+export const SOCKET_BASE_URL =
+  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
+
 const api = axios.create({
-  baseURL: "https://collab-platform-backend.onrender.com/api",
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
@@ -12,7 +18,23 @@ api.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${token}`;
     }
   }
+
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (
+      typeof window !== "undefined" &&
+      error?.response?.status === 401 &&
+      window.location.pathname !== "/login"
+    ) {
+      localStorage.removeItem("accessToken");
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default api;
