@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://collab-platform-backend.onrender.com/api";
 
 export const SOCKET_BASE_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_SOCKET_URL || "https://collab-platform-backend.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
