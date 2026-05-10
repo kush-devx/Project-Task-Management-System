@@ -201,3 +201,6 @@ export default function RegisterPage() {
           </div>
         </section>
       </div>
+    </main>
+  );
+}
